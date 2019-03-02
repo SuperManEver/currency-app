@@ -94,25 +94,30 @@ class App extends Component {
             options={options}
           />
         </Header>
-        <ExchangeRatesContainer>
-          <div>
-            {take(this.rates, SLICE_BOUNDARY).map(([currencyName, rate]) => (
-              <ExchangeRate key={currencyName}>
-                <p>{currencyName}:</p>
-                <p>{rate}</p>
-              </ExchangeRate>
-            ))}
-          </div>
 
-          <div>
-            {drop(this.rates, SLICE_BOUNDARY).map(([currencyName, rate]) => (
-              <ExchangeRate key={currencyName}>
-                <p>{currencyName}:</p>
-                <p>{rate}</p>
-              </ExchangeRate>
-            ))}
-          </div>
-        </ExchangeRatesContainer>
+        {this.store.inProgress ? (
+          <div>Loading...</div>
+        ) : (
+          <ExchangeRatesContainer>
+            <div>
+              {take(this.rates, SLICE_BOUNDARY).map(([currencyName, rate]) => (
+                <ExchangeRate key={currencyName}>
+                  <p>{currencyName}:</p>
+                  <p>{rate}</p>
+                </ExchangeRate>
+              ))}
+            </div>
+
+            <div>
+              {drop(this.rates, SLICE_BOUNDARY).map(([currencyName, rate]) => (
+                <ExchangeRate key={currencyName}>
+                  <p>{currencyName}:</p>
+                  <p>{rate}</p>
+                </ExchangeRate>
+              ))}
+            </div>
+          </ExchangeRatesContainer>
+        )}
       </PageContent>
     );
   }

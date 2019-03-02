@@ -1,8 +1,11 @@
 import { observable, computed, action, reaction } from 'mobx';
 import toPairs from 'lodash/toPairs';
 
+import FetchRatesOperation from 'operations/FetchExchangeRates';
+
 class ExchangeRates {
   @observable baseCurrency = 'USD';
+  @observable inProgress = false;
   @observable exchangeRates = {};
 
   @action
@@ -13,6 +16,16 @@ class ExchangeRates {
   @action
   updateBaseCurrency(currency) {
     this.baseCurrency = currency;
+  }
+
+  @action
+  enableInProgress() {
+    this.inProgress = true;
+  }
+
+  @action
+  disableInProgress() {
+    this.inProgress = false;
   }
 
   @computed
@@ -37,7 +50,9 @@ const store = new ExchangeRates();
 
 export const onBaseCurrencyChange = reaction(
   () => store.baseCurrency,
-  currency => console.log('currency exchane: ', currency),
+  currency => {
+    new FetchRatesOperation(store).run();
+  },
 );
 
 export default store;
