@@ -3,6 +3,8 @@ import Select from 'react-select';
 
 import styled from '@emotion/styled';
 
+import ExchangeRatesStore from 'stores/ExchangeRates';
+
 import FetchOperation from 'operations/FetchExchangeRates';
 
 const PageContent = styled.div`
@@ -26,7 +28,7 @@ const CurrencySelect = styled(Select)`
 
 class App extends Component {
   componentDidMount() {
-    new FetchOperation().run();
+    new FetchOperation(ExchangeRatesStore).run();
   }
 
   render() {
