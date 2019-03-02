@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { Provider, inject, observer } from 'mobx-react';
+
 import Select from 'react-select';
+import head from 'lodash/head';
 
 import styled from '@emotion/styled';
 
@@ -26,21 +29,33 @@ const CurrencySelect = styled(Select)`
   flex: 0 1 30%;
 `;
 
+@inject('exchangeRatesStore')
+@observer
 class App extends Component {
   componentDidMount() {
-    new FetchOperation(ExchangeRatesStore).run();
+    new FetchOperation(this.store).run();
+  }
+
+  get store() {
+    return this.props.exchangeRatesStore;
+  }
+
+  get options() {
+    return this.store.toSelectFormat;
   }
 
   render() {
+    const { options } = this;
+
     return (
       <PageContent>
         <Header>
           <p>Base Currency</p>
 
           <CurrencySelect
-            value={{ value: '', label: '' }}
+            value={head(options)}
             onChange={this.handleChange}
-            options={[]}
+            options={options}
           />
         </Header>
         <div>content goes here</div>
@@ -49,4 +64,8 @@ class App extends Component {
   }
 }
 
-export default App;
+export default () => (
+  <Provider exchangeRatesStore={ExchangeRatesStore}>
+    <App />
+  </Provider>
+);

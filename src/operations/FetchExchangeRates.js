@@ -13,8 +13,11 @@ class FetchExchangeRates {
         this.store.baseCurrency
       }`;
 
-      const result = await axios.get(URL);
-      console.log(result);
+      const {
+        data: { rates },
+      } = await axios.get(URL);
+
+      this.store.updateRates(rates);
     } catch (err) {
       console.error(err);
     }
