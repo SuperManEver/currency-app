@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Provider, inject, observer } from 'mobx-react';
+import { Router, Link } from '@reach/router';
 
 import Select from 'react-select';
 import head from 'lodash/head';
@@ -10,7 +11,7 @@ import ExchangeRatesStore, { onBaseCurrencyChange } from 'stores/ExchangeRates';
 
 import FetchOperation from 'operations/FetchExchangeRates';
 
-import { ExchangeRatesList } from 'components';
+import { ExchangeRatesList, CurrencyConverter, NavLink } from 'components';
 
 const PageContent = styled.div`
   padding: 20px;
@@ -22,15 +23,33 @@ const Header = styled.header`
   display: flex;
   width: 100%;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
+  margin-bottom: 24px;
 
-  p {
-    margin-right: 16px;
+  .header__nav-bar {
+    a:first-of-type {
+      margin-right: 16px;
+    }
+  }
+
+  .header__base-currency-wrapper {
+    flex: 0 1 40%;
+    display: flex;
+    align-items: center;
+
+    p {
+      flex: 0 1 26%;
+      margin-right: 16px;
+    }
+
+    & > div {
+      flex: 1;
+    }
   }
 `;
 
 const CurrencySelect = styled(Select)`
-  flex: 0 1 30%;
+  width: 100%;
 `;
 
 @inject('exchangeRatesStore')
@@ -68,16 +87,26 @@ class App extends Component {
     return (
       <PageContent>
         <Header>
-          <p>Base Currency</p>
+          <nav className="header__nav-bar">
+            <NavLink to="/exchange-rates">Exchange rates</NavLink>
+            <NavLink to="/converter">Converter</NavLink>
+          </nav>
 
-          <CurrencySelect
-            value={head(options)}
-            onChange={this.handleChange}
-            options={options}
-          />
+          <div className="header__base-currency-wrapper">
+            <p>Base Currency</p>
+
+            <CurrencySelect
+              value={head(options)}
+              onChange={this.handleChange}
+              options={options}
+            />
+          </div>
         </Header>
 
-        <ExchangeRatesList />
+        <Router>
+          <ExchangeRatesList default path="/exchange-rates" />
+          <CurrencyConverter path="/converter" />
+        </Router>
       </PageContent>
     );
   }
