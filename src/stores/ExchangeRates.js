@@ -1,12 +1,11 @@
 import { observable, computed, action, reaction } from 'mobx';
-import toPairs from 'lodash/toPairs';
 
 import FetchRatesOperation from 'operations/FetchExchangeRates';
 
 class ExchangeRates {
   @observable baseCurrency = 'USD';
   @observable inProgress = false;
-  @observable exchangeRates = {};
+  @observable exchangeRates = [];
 
   @action
   updateRates(rates) {
@@ -29,20 +28,18 @@ class ExchangeRates {
   }
 
   @computed
-  get toSelectFormat() {
-    const currencies = Object.keys(this.exchangeRates).filter(
-      currency => currency !== this.baseCurrency,
-    );
-
-    const allCurrencies = [this.baseCurrency, ...currencies];
-    return allCurrencies.map(key => ({ value: key, label: key }));
+  get rates() {
+    return this.exchangeRates.filter(rate => rate.name !== this.baseCurrency);
   }
 
   @computed
-  get toPairs() {
-    return toPairs(this.exchangeRates).filter(
-      ([name, _]) => name !== this.baseCurrency,
-    );
+  get toSelectFormat() {
+    const currencies = this.exchangeRates
+      .filter(currency => currency.name !== this.baseCurrency)
+      .map(currency => currency.name);
+
+    const allCurrencies = [this.baseCurrency, ...currencies];
+    return allCurrencies.map(key => ({ value: key, label: key }));
   }
 }
 
@@ -50,7 +47,7 @@ const store = new ExchangeRates();
 
 export const onBaseCurrencyChange = reaction(
   () => store.baseCurrency,
-  currency => {
+  () => {
     new FetchRatesOperation(store).run();
   },
 );

@@ -17,6 +17,11 @@ const ExchangeRatesContainer = styled.div`
 
 const ExchangeRate = styled.div`
   display: flex;
+  align-items: center;
+
+  .header__toggle-link {
+    margin-right: 12px;
+  }
 
   p:first-of-type {
     margin-right: 1em;
@@ -31,7 +36,7 @@ class ExchangeRatesList extends Component {
   }
 
   get rates() {
-    return this.store.toPairs;
+    return this.store.rates;
   }
 
   render() {
@@ -42,19 +47,25 @@ class ExchangeRatesList extends Component {
     return (
       <ExchangeRatesContainer>
         <div>
-          {take(this.rates, SLICE_BOUNDARY).map(([currencyName, rate]) => (
-            <ExchangeRate key={currencyName}>
-              <p>{currencyName}:</p>
-              <p>{rate}</p>
+          {take(this.rates, SLICE_BOUNDARY).map(currency => (
+            <ExchangeRate key={currency.name}>
+              <a href="#" className="header__toggle-link">
+                Like
+              </a>
+              <p>{currency.name}:</p>
+              <p>{currency.value}</p>
             </ExchangeRate>
           ))}
         </div>
 
         <div>
-          {drop(this.rates, SLICE_BOUNDARY).map(([currencyName, rate]) => (
-            <ExchangeRate key={currencyName}>
-              <p>{currencyName}:</p>
-              <p>{rate}</p>
+          {drop(this.rates, SLICE_BOUNDARY).map(currency => (
+            <ExchangeRate key={currency.name}>
+              <a href="#" className="header__toggle-link">
+                Like
+              </a>
+              <p>{currency.name}:</p>
+              <p>{currency.value}</p>
             </ExchangeRate>
           ))}
         </div>

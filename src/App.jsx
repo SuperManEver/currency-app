@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Provider, inject, observer } from 'mobx-react';
-import { Router, Link } from '@reach/router';
+import { Router } from '@reach/router';
 
 import Select from 'react-select';
 import head from 'lodash/head';
@@ -25,6 +25,8 @@ const Header = styled.header`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 24px;
+  border-bottom: 1px solid gainsboro;
+  padding-bottom: 6px;
 
   .header__nav-bar {
     a:first-of-type {

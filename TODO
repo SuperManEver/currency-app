@@ -1,2 +1,3 @@
 + fetch exchange rates if 'base currency' has changed
 + show loading indicator while loading happening
+- ability to save as favorite currency

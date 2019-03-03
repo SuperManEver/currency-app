@@ -1,4 +1,7 @@
 import axios from 'axios';
+import toPairs from 'lodash/toPairs';
+
+import { Currency } from 'models';
 
 class FetchExchangeRates {
   store;
@@ -19,9 +22,10 @@ class FetchExchangeRates {
         data: { rates },
       } = await axios.get(URL);
 
-      this.store.disableInProgress();
+      const currencies = toPairs(rates).map(rate => new Currency(...rate));
 
-      this.store.updateRates(rates);
+      this.store.updateRates(currencies);
+      this.store.disableInProgress();
     } catch (err) {
       console.error(err);
       this.store.disableInProgress();
