@@ -6,6 +6,7 @@ class ExchangeRates {
   @observable baseCurrency = 'USD';
   @observable inProgress = false;
   @observable exchangeRates = [];
+  favoritesCurrencies = observable(['AUD', 'CZK', 'RUB', 'HUF']);
 
   @action
   updateRates(rates) {
@@ -29,7 +30,15 @@ class ExchangeRates {
 
   @computed
   get rates() {
-    return this.exchangeRates.filter(rate => rate.name !== this.baseCurrency);
+    return this.exchangeRates
+      .filter(rate => rate.name !== this.baseCurrency)
+      .sort((a, b) => {
+        if (a.favorite && !b.favorite) {
+          return -1;
+        } else {
+          return 1;
+        }
+      });
   }
 
   @computed

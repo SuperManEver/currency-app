@@ -24,6 +24,12 @@ class FetchExchangeRates {
 
       const currencies = toPairs(rates).map(rate => new Currency(...rate));
 
+      currencies.forEach(currency => {
+        if (this.store.favoritesCurrencies.includes(currency.name)) {
+          currency.makeFavorite();
+        }
+      });
+
       this.store.updateRates(currencies);
       this.store.disableInProgress();
     } catch (err) {

@@ -50,7 +50,7 @@ class ExchangeRatesList extends Component {
           {take(this.rates, SLICE_BOUNDARY).map(currency => (
             <ExchangeRate key={currency.name}>
               <a href="#" className="header__toggle-link">
-                Like
+                {currency.favorite ? 'Like' : "Don't like"}
               </a>
               <p>{currency.name}:</p>
               <p>{currency.value}</p>
@@ -62,7 +62,7 @@ class ExchangeRatesList extends Component {
           {drop(this.rates, SLICE_BOUNDARY).map(currency => (
             <ExchangeRate key={currency.name}>
               <a href="#" className="header__toggle-link">
-                Like
+                {currency.favorite ? 'Like' : "Don't like"}
               </a>
               <p>{currency.name}:</p>
               <p>{currency.value}</p>
