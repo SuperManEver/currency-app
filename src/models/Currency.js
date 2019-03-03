@@ -15,6 +15,11 @@ class Currency {
   makeFavorite() {
     this.favorite = true;
   }
+
+  @action
+  toggleFavorite() {
+    this.favorite = !this.favorite;
+  }
 }
 
 export default Currency;

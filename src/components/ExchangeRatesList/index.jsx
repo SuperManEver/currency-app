@@ -31,6 +31,13 @@ const ExchangeRate = styled.div`
 @inject('exchangeRatesStore')
 @observer
 class ExchangeRatesList extends Component {
+  favoriteToggleCreator = currency => {
+    return evt => {
+      evt.preventDefault();
+      currency.toggleFavorite();
+    };
+  };
+
   get store() {
     return this.props.exchangeRatesStore;
   }
@@ -49,8 +56,12 @@ class ExchangeRatesList extends Component {
         <div>
           {take(this.rates, SLICE_BOUNDARY).map(currency => (
             <ExchangeRate key={currency.name}>
-              <a href="#" className="header__toggle-link">
-                {currency.favorite ? 'Like' : "Don't like"}
+              <a
+                href="#"
+                className="header__toggle-link"
+                onClick={this.favoriteToggleCreator(currency)}
+              >
+                {currency.favorite ? 'Favorite' : 'Make Favorite'}
               </a>
               <p>{currency.name}:</p>
               <p>{currency.value}</p>
@@ -61,8 +72,12 @@ class ExchangeRatesList extends Component {
         <div>
           {drop(this.rates, SLICE_BOUNDARY).map(currency => (
             <ExchangeRate key={currency.name}>
-              <a href="#" className="header__toggle-link">
-                {currency.favorite ? 'Like' : "Don't like"}
+              <a
+                href="#"
+                className="header__toggle-link"
+                onClick={this.favoriteToggleCreator(currency)}
+              >
+                {currency.favorite ? 'Favorite' : 'Make Favorite'}
               </a>
               <p>{currency.name}:</p>
               <p>{currency.value}</p>
