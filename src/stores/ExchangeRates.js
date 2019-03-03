@@ -1,16 +1,30 @@
 import { observable, computed, action, reaction } from 'mobx';
 
-import FetchRatesOperation from 'operations/FetchExchangeRates';
+import {
+  FetchExchangeRatesOperation,
+  SaveFavoritesOperation,
+} from 'operations';
 
 class ExchangeRates {
   @observable baseCurrency = 'USD';
   @observable inProgress = false;
   @observable exchangeRates = [];
-  favoritesCurrencies = observable(['AUD', 'CZK', 'RUB', 'HUF']);
+  favoritesCurrencies = observable([]);
 
   @action
   updateRates(rates) {
     this.exchangeRates = rates;
+  }
+
+  @action
+  updateFavoriteCurrencies(currency) {
+    if (this.favoritesCurrencies.includes(currency)) {
+      this.favoritesCurrencies.remove(currency);
+    } else {
+      this.favoritesCurrencies.push(currency);
+    }
+
+    new SaveFavoritesOperation().run(this);
   }
 
   @action
@@ -26,6 +40,11 @@ class ExchangeRates {
   @action
   disableInProgress() {
     this.inProgress = false;
+  }
+
+  @action
+  initFavorites(favorites) {
+    this.favoritesCurrencies = observable(favorites);
   }
 
   @computed
@@ -57,7 +76,7 @@ const store = new ExchangeRates();
 export const onBaseCurrencyChange = reaction(
   () => store.baseCurrency,
   () => {
-    new FetchRatesOperation(store).run();
+    new FetchExchangeRatesOperation(store).run();
   },
 );
 

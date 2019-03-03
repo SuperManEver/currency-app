@@ -1,5 +1,7 @@
 import { observable, action } from 'mobx';
 
+import ExchangeRates from 'stores/ExchangeRates';
+
 class Currency {
   @observable name = '';
   @observable value = 0;
@@ -19,6 +21,7 @@ class Currency {
   @action
   toggleFavorite() {
     this.favorite = !this.favorite;
+    ExchangeRates.updateFavoriteCurrencies(this.name);
   }
 }
 

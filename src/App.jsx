@@ -9,7 +9,10 @@ import styled from '@emotion/styled';
 
 import ExchangeRatesStore, { onBaseCurrencyChange } from 'stores/ExchangeRates';
 
-import FetchOperation from 'operations/FetchExchangeRates';
+import {
+  FetchExchangeRatesOperation,
+  LoadFavoritesOperation,
+} from 'operations';
 
 import { ExchangeRatesList, CurrencyConverter, NavLink } from 'components';
 
@@ -58,7 +61,8 @@ const CurrencySelect = styled(Select)`
 @observer
 class App extends Component {
   componentDidMount() {
-    new FetchOperation(this.store).run();
+    new FetchExchangeRatesOperation(this.store).run();
+    new LoadFavoritesOperation().run();
   }
 
   componentWillUnmount() {
