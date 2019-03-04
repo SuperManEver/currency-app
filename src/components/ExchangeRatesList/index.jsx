@@ -18,6 +18,7 @@ const ExchangeRatesContainer = styled.div`
 const ExchangeRate = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 18px;
 
   .header__toggle-link {
     margin-right: 12px;
@@ -56,13 +57,12 @@ class ExchangeRatesList extends Component {
         <div>
           {take(this.rates, SLICE_BOUNDARY).map(currency => (
             <ExchangeRate key={currency.name}>
-              <a
-                href="#"
+              <button
                 className="header__toggle-link"
                 onClick={this.favoriteToggleCreator(currency)}
               >
                 {currency.favorite ? 'Favorite' : 'Make Favorite'}
-              </a>
+              </button>
               <p>{currency.name}:</p>
               <p>{currency.value}</p>
             </ExchangeRate>
@@ -72,13 +72,12 @@ class ExchangeRatesList extends Component {
         <div>
           {drop(this.rates, SLICE_BOUNDARY).map(currency => (
             <ExchangeRate key={currency.name}>
-              <a
-                href="#"
+              <button
                 className="header__toggle-link"
                 onClick={this.favoriteToggleCreator(currency)}
               >
                 {currency.favorite ? 'Favorite' : 'Make Favorite'}
-              </a>
+              </button>
               <p>{currency.name}:</p>
               <p>{currency.value}</p>
             </ExchangeRate>

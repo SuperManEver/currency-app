@@ -44,7 +44,13 @@ class ExchangeRates {
 
   @action
   initFavorites(favorites) {
-    this.favoritesCurrencies = observable(favorites);
+    if (favorites) {
+      this.favoritesCurrencies = observable(favorites);
+    }
+  }
+
+  getRatioForCurrency(currency) {
+    return this.exchangeRates.find(rate => rate.name === currency);
   }
 
   @computed
