@@ -14,8 +14,9 @@ app.use(express.static(staticDirPath));
 
 // handle every other route with index.html, which will contain
 // a script tag to your application's JavaScript file(s).
-app.get('*', function(req, res) {
-  res.sendFile(path.resolve(path.join(__dirname, 'build', 'index.html')));
+app.get('/', function(req, res) {
+  // res.sendFile(path.resolve(path.join(__dirname, 'build', 'index.html')));
+  res.send('hello world!');
 });
 
 app.listen(port);
