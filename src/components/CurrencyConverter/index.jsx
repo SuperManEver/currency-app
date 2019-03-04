@@ -52,7 +52,7 @@ class CurrencyConverter extends Component {
     const { name, value } = evt.target;
 
     this.setState({
-      [name]: parseInt(value),
+      [name]: value,
     });
   };
 
@@ -82,8 +82,14 @@ class CurrencyConverter extends Component {
     return 0;
   }
 
+  get baseCurrencyValue() {
+    const { baseCurrencyValue } = this.state;
+
+    return baseCurrencyValue;
+  }
+
   render() {
-    const { counterCurrency, baseCurrencyValue } = this.state;
+    const { counterCurrency } = this.state;
     const { baseCurrency } = this.store;
 
     return (
@@ -95,7 +101,7 @@ class CurrencyConverter extends Component {
           <input
             type="text"
             name="baseCurrencyValue"
-            value={baseCurrencyValue}
+            value={this.baseCurrencyValue}
             onChange={this.handleValueUpdate}
           />
         </div>
