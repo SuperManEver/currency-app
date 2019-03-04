@@ -45,14 +45,38 @@ class CurrencyConverter extends Component {
   handleCurrencyChange = option => {
     this.setState({
       counterCurrency: option,
+      baseCurrencyValue: '',
+      counterCurrencyValue: '',
     });
   };
 
-  handleValueUpdate = evt => {
-    const { name, value } = evt.target;
+  handleBaseCurrencyUpdate = evt => {
+    const { value } = evt.target;
+
+    const {
+      counterCurrency: { label },
+    } = this.state;
+
+    const ratio = this.store.getRatioForCurrency(label);
 
     this.setState({
-      [name]: value,
+      baseCurrencyValue: value,
+      counterCurrencyValue: ratio.value * (parseFloat(value) || 0),
+    });
+  };
+
+  handleCounterCurrencyUpdate = evt => {
+    const { value } = evt.target;
+
+    const {
+      counterCurrency: { label },
+    } = this.state;
+
+    const ratio = this.store.getRatioForCurrency(label);
+
+    this.setState({
+      counterCurrencyValue: value,
+      baseCurrencyValue: (1 / ratio.value) * (parseFloat(value) || 0),
     });
   };
 
@@ -67,29 +91,12 @@ class CurrencyConverter extends Component {
     }));
   }
 
-  get counterCurrencyValue() {
-    const {
-      baseCurrencyValue,
-      counterCurrency: { label },
-    } = this.state;
-
-    const ratio = this.store.getRatioForCurrency(label);
-
-    if (ratio) {
-      return ratio.value * parseFloat(baseCurrencyValue || 0);
-    }
-
-    return 0;
-  }
-
-  get baseCurrencyValue() {
-    const { baseCurrencyValue } = this.state;
-
-    return baseCurrencyValue;
-  }
-
   render() {
-    const { counterCurrency } = this.state;
+    const {
+      counterCurrency,
+      counterCurrencyValue,
+      baseCurrencyValue,
+    } = this.state;
     const { baseCurrency } = this.store;
 
     return (
@@ -101,8 +108,8 @@ class CurrencyConverter extends Component {
           <input
             type="text"
             name="baseCurrencyValue"
-            value={this.baseCurrencyValue}
-            onChange={this.handleValueUpdate}
+            value={baseCurrencyValue}
+            onChange={this.handleBaseCurrencyUpdate}
           />
         </div>
         <div>
@@ -116,8 +123,8 @@ class CurrencyConverter extends Component {
           <input
             type="text"
             name="counterCurrencyValue"
-            value={this.counterCurrencyValue}
-            onChange={this.handleValueUpdate}
+            value={counterCurrencyValue}
+            onChange={this.handleCounterCurrencyUpdate}
           />
         </div>
       </Container>

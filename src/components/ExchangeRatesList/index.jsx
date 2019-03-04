@@ -18,6 +18,7 @@ const ExchangeRatesContainer = styled.div`
 const ExchangeRate = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 18px;
 
   .header__toggle-link {
     margin-right: 12px;
