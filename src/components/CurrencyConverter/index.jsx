@@ -7,7 +7,26 @@ const Container = styled.div`
   display: flex;
 
   & > div {
-    margin-right: 24px;
+    header {
+      margin-bottom: 12px;
+
+      &.converter__base-currency-header {
+        height: 35px;
+        display: flex;
+        align-items: center;
+        padding-left: 10px;
+        border-radius: 4px;
+        border: 1px solid hsl(0, 0%, 80%);
+      }
+    }
+
+    input {
+      padding: 8px 12px;
+    }
+
+    &:first-of-type {
+      margin-right: 24px;
+    }
   }
 `;
 
@@ -60,7 +79,7 @@ class CurrencyConverter extends Component {
       return ratio.value * parseFloat(baseCurrencyValue || 0);
     }
 
-    return baseCurrencyValue;
+    return 0;
   }
 
   render() {
@@ -70,7 +89,9 @@ class CurrencyConverter extends Component {
     return (
       <Container>
         <div>
-          <p>{baseCurrency}</p>
+          <header className="converter__base-currency-header">
+            <p>{baseCurrency}</p>
+          </header>
           <input
             type="text"
             name="baseCurrencyValue"
@@ -79,11 +100,13 @@ class CurrencyConverter extends Component {
           />
         </div>
         <div>
-          <Select
-            value={counterCurrency}
-            options={this.options}
-            onChange={this.handleCurrencyChange}
-          />
+          <header>
+            <Select
+              value={counterCurrency}
+              options={this.options}
+              onChange={this.handleCurrencyChange}
+            />
+          </header>
           <input
             type="text"
             name="counterCurrencyValue"
